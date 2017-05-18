@@ -1,6 +1,6 @@
 # tepco-watt-stats
 
-くらしTEPCO(https://www.kurashi.tepco.co.jp/pf/ja/pc/mypage/home/index.page)のページから、電力使用量のデータを取得するスクリプトです。
+くらしTEPCO(https://www.kurashi.tepco.co.jp/pf/ja/pc/mypage/home/index.page )のページから、電力使用量のデータを取得するスクリプトです。
 
 # Usage
 
