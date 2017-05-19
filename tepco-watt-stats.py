@@ -95,8 +95,8 @@ if(args.json == True):
             '曜日': line[5],
             '休祝日': True if line[6] == "○" else False,
             '契約メニュー': line[7],
-            'ご使用量': line[8],
-            '売電量': line[9],
+            'ご使用量': 0.0 if line[8] == "" else float(line[8]),
+            '売電量': 0.0 if line[9] == "" else float(line[9]),
         })
 
     print(json.dumps(stats, ensure_ascii=False))
