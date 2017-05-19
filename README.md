@@ -7,9 +7,9 @@
 あらかじめ、ログイン用ユーザIDとパスワードの値を、それぞれ環境変数 TEPCO_WATT_USERNAME と TEPCO_WATT_PASSWORD にセットしておいてください。
 
 ```
-python3 tepco-watt-stats.py YYYY-MM-DD
-python3 tepco-watt-stats.py YYYY-MM
-python3 tepco-watt-stats.py YYYY
+python3 tepco-watt-stats.py YYYY-MM-DD [-j/--json]
+python3 tepco-watt-stats.py YYYY-MM [-j/--json]
+python3 tepco-watt-stats.py YYYY [-j/--json]
 ```
 
 引数に渡す日付が
@@ -19,4 +19,4 @@ python3 tepco-watt-stats.py YYYY
 
 それぞれ取得します。
 
-なお現状は、CSV データをそのまま標準出力に出力するだけです。他の形式での出力は追々実装予定。
+標準では、CSV データをそのまま標準出力に出力しますが、-j/--json オプションを付けると、データを JSON に加工して出力します。

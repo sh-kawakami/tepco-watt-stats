@@ -4,6 +4,9 @@ import os
 import requests
 import argparse
 import re
+import csv
+import io
+import json
 from datetime import date
 from pprint import pprint
 from urllib.parse import quote
@@ -63,6 +66,35 @@ elif(month != None):
 csvgetheader = {
     'Referer': 'https://www.kurashi.tepco.co.jp/pf/ja/pc/mypage/learn/comparison.page',
 }
-csv = session.get(csv_url, headers=csvgetheader)
-csv.encoding = csv.apparent_encoding
-print(csv.text)
+csvdata = session.get(csv_url, headers=csvgetheader)
+csvdata.encoding = csvdata.apparent_encoding
+
+# -j/--json オプションがあれば JSON に仕立てて表示、無ければ生データを表示
+if(args.json == True):
+    lines = csv.reader(io.StringIO(initial_value=csvdata.text))
+
+    stats = {
+        'お客さま番号': "",
+        '事業所コード': "",
+        'ご請求番号': "",
+        '供給地点特定番号': "",
+        '使用量': []
+    }
+
+    for line in lines:
+        stats['お客さま番号'] = line[0]
+        stats['事業所コード'] = line[1]
+        stats['ご請求番号'] = line[2]
+        stats['供給地点特定番号'] = line[3]
+        stats['使用量'].append({
+            '年月日': line[4],
+            '曜日': line[5],
+            '休祝日': True if line[6] == "○" else False,
+            '契約メニュー': line[7],
+            'ご使用量': line[8],
+            '売電量': line[9],
+        })
+
+    print(json.dumps(stats, ensure_ascii=False))
+else:
+    print(csvdata.text)
