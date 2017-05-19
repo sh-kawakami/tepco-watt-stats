@@ -82,6 +82,10 @@ if(args.json == True):
     }
 
     for line in lines:
+
+        if(line[7] == '契約メニュー'):
+            continue
+
         stats['お客さま番号'] = line[0]
         stats['事業所コード'] = line[1]
         stats['ご請求番号'] = line[2]
