@@ -82,22 +82,39 @@ if(args.json == True):
     }
 
     for line in lines:
-
-        if(line[7] == '契約メニュー'):
+        if (line[7] == '契約メニュー'):
+            continue
+        if (line[5] == '契約メニュー' and not month and not day):
             continue
 
         stats['お客さま番号'] = line[0]
         stats['事業所コード'] = line[1]
         stats['ご請求番号'] = line[2]
         stats['供給地点特定番号'] = line[3]
-        stats['使用量'].append({
-            '年月日': line[4],
-            '曜日': line[5],
-            '休祝日': True if line[6] == "○" else False,
-            '契約メニュー': line[7],
-            'ご使用量': 0.0 if line[8] == "" else float(line[8]),
-            '売電量': 0.0 if line[9] == "" else float(line[9]),
+        if (month):
+            dow_idx = 5
+            menu_idx = 7
+            usage_idx = 8
+            sell_idx = 9
+        else:
+            # year only mode
+            dow_idx = -1
+            menu_idx = 5
+            usage_idx = 9
+            sell_idx = 23
+        usage = 0.0 if line[usage_idx] == '' else float(line[usage_idx])
+        sell = 0.0 if line[sell_idx] == '' else float(line[sell_idx])
+        d = {'年月日': line[4]}
+        if (month):
+            d.update({
+                '曜日': line[dow_idx],
+                '休祝日': True if line[6] == "○"  else False})
+        d.update({
+            '契約メニュー': line[menu_idx],
+            'ご使用量': usage,
+            '売電量': sell,
         })
+        stats['使用量'].append(d)
 
     print(json.dumps(stats, ensure_ascii=False))
 else:
